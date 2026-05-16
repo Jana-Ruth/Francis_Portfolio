@@ -28,6 +28,11 @@ body {
   line-height: 1.6;
 }
 
+body::selection {
+  color: var(--white);
+  background: var(--teal);
+}
+
 img {
   display: block;
   max-width: 100%;
@@ -51,6 +56,8 @@ a {
   padding: 20px clamp(20px, 5vw, 72px);
   color: var(--white);
   background: linear-gradient(180deg, rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0));
+  animation: headerDrop 700ms ease both;
+  backdrop-filter: blur(2px);
 }
 
 .brand {
@@ -74,6 +81,27 @@ a {
   opacity: 1;
 }
 
+.nav-links a {
+  position: relative;
+}
+
+.nav-links a::after {
+  position: absolute;
+  right: 0;
+  bottom: -7px;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
 .hero {
   position: relative;
   min-height: 92vh;
@@ -95,6 +123,7 @@ a {
   height: 100%;
   object-fit: cover;
   object-position: 52% 24%;
+  animation: heroImage 1200ms ease-out both;
 }
 
 .hero-overlay {
@@ -111,6 +140,26 @@ a {
 .hero-content {
   width: min(760px, 100%);
   padding: 150px clamp(20px, 5vw, 72px) 72px;
+}
+
+.hero-content > * {
+  animation: fadeUp 750ms ease both;
+}
+
+.hero-content .eyebrow {
+  animation-delay: 160ms;
+}
+
+.hero-content h1 {
+  animation-delay: 260ms;
+}
+
+.hero-copy {
+  animation-delay: 380ms;
+}
+
+.hero-actions {
+  animation-delay: 500ms;
 }
 
 .eyebrow,
@@ -176,11 +225,25 @@ h3 {
   border-radius: 6px;
   font-weight: 800;
   line-height: 1;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(17, 24, 39, 0.18);
 }
 
 .button.primary {
   color: var(--white);
   background: var(--teal);
+}
+
+.button.primary:hover {
+  background: #0c665f;
 }
 
 .button.secondary {
@@ -234,6 +297,14 @@ h3 {
   min-height: 138px;
   padding: 26px;
   background: var(--white);
+  transition:
+    transform 220ms ease,
+    background 220ms ease;
+}
+
+.metric:hover {
+  background: #f4fbf8;
+  transform: translateY(-4px);
 }
 
 .metric strong {
@@ -269,6 +340,16 @@ h3 {
 .project-card {
   padding: 28px;
   box-shadow: 0 16px 45px rgba(17, 24, 39, 0.08);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.project-card:hover {
+  border-color: rgba(15, 118, 110, 0.28);
+  box-shadow: 0 26px 70px rgba(17, 24, 39, 0.14);
+  transform: translateY(-6px);
 }
 
 .project-card p,
@@ -299,7 +380,19 @@ h3 {
   justify-content: space-between;
   gap: 24px;
   padding: 30px;
+  position: relative;
+  overflow: hidden;
   box-shadow: var(--shadow);
+}
+
+.portfolio-panel::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  content: "";
+  background: linear-gradient(180deg, var(--teal), var(--gold));
 }
 
 .portfolio-panel p {
@@ -320,6 +413,14 @@ h3 {
   font-weight: 800;
   text-decoration: underline;
   text-underline-offset: 4px;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.text-link:hover {
+  color: var(--wine);
+  transform: translateY(-1px);
 }
 
 .band {
@@ -350,6 +451,14 @@ h3 {
   padding: 26px;
   border: 0;
   background: #283039;
+  transition:
+    transform 220ms ease,
+    background 220ms ease;
+}
+
+.skill-block:hover {
+  background: #303945;
+  transform: translateY(-5px);
 }
 
 .skill-block h3 {
@@ -381,6 +490,71 @@ h3 {
 .contact-actions {
   align-self: center;
   justify-content: flex-end;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 650ms ease var(--reveal-delay, 0ms),
+    transform 650ms ease var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes headerDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroImage {
+  from {
+    filter: saturate(0.85) brightness(0.82);
+    transform: scale(1.04);
+  }
+
+  to {
+    filter: saturate(1) brightness(1);
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 920px) {
